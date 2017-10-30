@@ -36,7 +36,7 @@ static int oil_proteus_callback(bitbuffer_t *bitbuffer)
     unsigned bitpos = 0;
     bitbuffer_t databits = {0};
 	int events = 0;
-	int data_payload[6];
+	int data_payload[8];
 
     local_time_str(0, time_str);
 
@@ -52,7 +52,6 @@ static int oil_proteus_callback(bitbuffer_t *bitbuffer)
 	if (databits.bits_per_row[0] != 64)
 	    continue;
 
-	bitbuffer_print(&databits);
 	b = databits.bb[0];
 
 	// Check for postamble, depending on last data bit
@@ -88,7 +87,7 @@ static int oil_proteus_callback(bitbuffer_t *bitbuffer)
 	    depth = b[6];
 
     // Format data
-    for(int j=0; j<6; j++){
+    for(int j=0; j<8; j++){
         data_payload[j] = (int)b[j];
     }
 		
@@ -100,7 +99,7 @@ static int oil_proteus_callback(bitbuffer_t *bitbuffer)
 			 "temperature_C", "", DATA_DOUBLE, temperature,
 			 "binding_countdown", "", DATA_INT, binding_countdown,
 			 "depth", "", DATA_INT, depth,
-            "payload",       "Payload",       DATA_ARRAY, data_array(6, DATA_INT, data_payload),
+            "payload",       "Payload",       DATA_ARRAY, data_array(8, DATA_INT, data_payload),
 			 NULL);
 	data_acquired_handler(data);
 	events++;
