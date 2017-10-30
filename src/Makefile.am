@@ -81,6 +81,7 @@ rtl_433_SOURCES      = baseband.c \
                        devices/wg_pb12v1.c \
                        devices/ibis_beacon.c \
                        devices/oil_standard.c \
+                       devices/oil_proteus.c \
                        devices/tpms_citroen.c \
                        devices/thermopro_tp11.c \
                        devices/solight_te44.c \
