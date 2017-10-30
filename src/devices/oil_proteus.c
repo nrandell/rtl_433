@@ -35,7 +35,8 @@ static int oil_proteus_callback(bitbuffer_t *bitbuffer)
     data_t *data;
     unsigned bitpos = 0;
     bitbuffer_t databits = {0};
-    int events = 0;
+	int events = 0;
+	int data_payload[6];
 
     local_time_str(0, time_str);
 
@@ -86,6 +87,11 @@ static int oil_proteus_callback(bitbuffer_t *bitbuffer)
 	    // the sensor flat down on a table, it still reads about 13.
 	    depth = b[6];
 
+    // Format data
+    for(int j=0; j<6; j++){
+        data_payload[j] = (int)b[j];
+    }
+		
 	data = data_make("time", "", DATA_STRING, time_str,
 			 "model", "", DATA_STRING, "Oil Proteus",
 			 "id", "", DATA_FORMAT, "%06x", DATA_INT, unit_id,
@@ -94,6 +100,7 @@ static int oil_proteus_callback(bitbuffer_t *bitbuffer)
 			 "temperature_C", "", DATA_DOUBLE, temperature,
 			 "binding_countdown", "", DATA_INT, binding_countdown,
 			 "depth", "", DATA_INT, depth,
+            "payload",       "Payload",       DATA_ARRAY, data_array(6, DATA_INT, data_payload),
 			 NULL);
 	data_acquired_handler(data);
 	events++;
